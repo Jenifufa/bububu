@@ -1,1 +1,638 @@
-#bubububu
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código Clase Avión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-gray: #2d3436;
+            --medium-gray: #636e72;
+            --light-gray: #b2bec3;
+            --text-gray: #dfe6e9;
+            --highlight-gray: #7f8c8d;
+            --background-green: #e6f7e9;
+            --pastel-green: #b5ead7;
+            --light-pastel-green: #c7f9cc;
+            --dark-pastel-green: #8ed1b7;
+            --header-green: #7fc8a9;
+            --accent-green: #5dbb63;
+            --occupied-green: #57cc99;
+            --accent-yellow: #fdffb6;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-green);
+            color: var(--dark-gray);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--header-green);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--pastel-green);
+            margin-bottom: 30px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        h1 {
+            font-family: 'Roboto Slab', serif;
+            margin: 0;
+            color: var(--dark-gray);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--light-pastel-green);
+        }
+
+        .important-section {
+            background-color: var(--light-pastel-green);
+            border: 2px dashed var(--dark-pastel-green);
+        }
+
+        h2 {
+            font-family: 'Roboto Slab', serif;
+            color: var(--dark-pastel-green);
+            border-bottom: 2px solid var(--pastel-green);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .important-section h2 {
+            color: var(--dark-gray);
+            text-shadow: none;
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border-left: 4px solid var(--pastel-green);
+            color: var(--dark-gray);
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        .keyword {
+            color: #5978d6;
+        }
+
+        .string {
+            color: #ce7891;
+        }
+
+        .function {
+            color: #dcaa7c;
+        }
+
+        .class {
+            color: #4eb0a0;
+        }
+        
+        .airplane-map {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .airplane {
+            display: inline-block;
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .airplane::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            bottom: 10%;
+            left: 50%;
+            border-left: 2px dashed var(--pastel-green);
+            z-index: 1;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .seats-container {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .left-seats, .right-seats {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .seat {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 2px;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .seat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .ejecutiva {
+            background-color: var(--accent-yellow);
+            color: var(--dark-gray);
+        }
+        
+        .ejecutiva.occupied {
+            background-color: var(--occupied-green);
+        }
+        
+        .ejecutiva.empty {
+            background-color: #222;
+            color: white;
+        }
+        
+        .economica {
+            background-color: #4a95e8;
+            color: white;
+        }
+        
+        .economica.empty {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+        
+        .economica.occupied {
+            background-color: var(--occupied-green);
+        }
+        
+        .map-legend {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 4px;
+        }
+
+        .terminal {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #dcdcdc;
+            margin-top: 20px;
+            border: 1px solid var(--pastel-green);
+        }
+
+        .terminal-output {
+            color: #dcdcdc;
+        }
+
+        .terminal-prompt {
+            color: var(--pastel-green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: var(--header-green);
+            border-top: 2px solid var(--pastel-green);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .student-info {
+            background-color: var(--pastel-green);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .student-info h3 {
+            margin-top: 0;
+            color: var(--dark-gray);
+        }
+
+        .github-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .github-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            background-color: var(--dark-pastel-green);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Implementación de la Clase Avión</h1>
+    </header>
+
+    <div class="container">
+        <div class="student-info">
+            <h3></h3>
+            <p><strong></strong> Jenifer Daniela Urbano</p>
+            <p><strong></strong> 1B</p>
+            <p><strong></strong> Universidad Cooperativa de Colombia</p>
+            <p><strong></strong> Ingeniería de Software</p>
+        </div>
+
+        <div class="section">
+            <h2>Definición de la Clase Avión</h2>
+            <pre>
+<span class="keyword">from</span> silla <span class="keyword">import</span> Silla
+<span class="keyword">from</span> pasajero <span class="keyword">import</span> Pasajero
+
+<span class="keyword">class</span> <span class="class">Avion</span>:
+
+    <span class="comment"># Atributos</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):  
+        self.__sillas = []
+
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(1, 9):         <span class="comment">#Sillas ejecutivas (1-8), dos filas con 4 sillas cada una (2 ventanas y 2 pasillos por fila)</span>
+            <span class="keyword">if</span> i <span class="keyword">in</span> [1, 4, 5, 8]:
+                ubicacion = Silla.Ubicacion.VENTANA  <span class="comment"># Ventana: sillas 1, 4, 5, 8</span>
+            <span class="keyword">else</span>:
+                ubicacion = Silla.Ubicacion.PASILLO  <span class="comment"># Pasillo: sillas 2, 3, 6, 7</span>
+            
+            <span class="comment"># Silla ejecutiva</span>
+            self.__sillas.append(Silla(i, Silla.Clase.EJECUTIVA, ubicacion))
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(9, 51):        <span class="comment"># Sillas económicas (9-50), 7 filas con 6 sillas cada una (2 ventanas, 2 centros, 2 pasillos por fila)</span>
+
+            posicion = (i - 9) % 6 + 1  <span class="comment"># Calcular posición dentro de la fila (1-6)</span>
+
+            <span class="keyword">if</span> posicion <span class="keyword">in</span> [1, 6]:
+                ubicacion = Silla.Ubicacion.VENTANA         <span class="comment"># Ventana: posiciones 1 y 6</span>
+            <span class="keyword">elif</span> posicion <span class="keyword">in</span> [2, 5]:
+                ubicacion = Silla.Ubicacion.CENTRO          <span class="comment"># Centro: posiciones 2 y 5</span>
+            <span class="keyword">else</span>: 
+                ubicacion = Silla.Ubicacion.PASILLO         <span class="comment"># Pasillo: posiciones 3 y 4</span>
+            
+            <span class="comment"># Silla económica</span>
+            self.__sillas.append(Silla(i, Silla.Clase.ECONOMICA, ubicacion))
+            </pre>
+        </div>
+
+        <div class="section important-section">
+            <h2>TAREA CLASE 2</h2>
+            <pre>
+<span class="keyword">def</span> <span class="function">contarSillasEjecutivasOcupadas</span>(self):
+    contador = 0
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8):
+        <span class="keyword">if</span> self.__sillas[i].sillaAsignada():
+            contador += 1
+    <span class="keyword">return</span> contador
+
+<span class="keyword">def</span> <span class="function">buscarPasajeroEjecutivo</span>(self, pCedula):
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> silla.sillaAsignada() <span class="keyword">and</span> silla.darPasajero().darCedula() == pCedula:
+            <span class="keyword">return</span> silla
+    <span class="keyword">return</span> None
+
+<span class="keyword">def</span> <span class="function">buscarSillaEconomicaLibre</span>(self, pUbicacion):
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8, len(self.__sillas)):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> <span class="keyword">not</span> silla.sillaAsignada() <span class="keyword">and</span> silla.darUbicacion() == pUbicacion:
+            <span class="keyword">return</span> silla
+    <span class="keyword">return</span> None
+
+<span class="keyword">def</span> <span class="function">asignarSillaEconomica</span>(self, pUbicacion, pPasajero):
+    silla = self.buscarSillaEconomicaLibre(pUbicacion)
+    <span class="keyword">if</span> silla <span class="keyword">is not</span> None:
+        silla.asignarPasajero(pPasajero)
+        <span class="keyword">return</span> True
+    <span class="keyword">return</span> False
+
+<span class="keyword">def</span> <span class="function">anularReservaEjecutivo</span>(self, pCedula):
+    silla = self.buscarPasajeroEjecutivo(pCedula)
+    <span class="keyword">if</span> silla <span class="keyword">is not</span> None:
+        silla.desasignarSilla()
+        <span class="keyword">return</span> True
+    <span class="keyword">return</span> False
+
+<span class="keyword">def</span> <span class="function">contarVentanasEconomica</span>(self):
+    contador = 0
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8, len(self.__sillas)):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> <span class="keyword">not</span> silla.sillaAsignada() <span class="keyword">and</span> silla.darUbicacion() == Silla.Ubicacion.VENTANA:
+            contador += 1
+    <span class="keyword">return</span> contador
+
+<span class="keyword">def</span> <span class="function">hayDosHomonimosEconomica</span>(self):
+    <span class="comment"># Crear lista de nombres de pasajeros en clase económica</span>
+    nombres = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8, len(self.__sillas)):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> silla.sillaAsignada():
+            nombre = silla.darPasajero().darNombre()
+            <span class="comment"># Si el nombre ya está en la lista, hay homónimos</span>
+            <span class="keyword">if</span> nombre <span class="keyword">in</span> nombres:
+                <span class="keyword">return</span> True
+            nombres.append(nombre)   <span class="comment"># Agregar el nombre a la lista</span>
+    <span class="keyword">return</span> False
+            </pre>
+        </div>
+
+        <div class="section important-section">
+            <h2>TAREA CASA 3</h2>
+            <pre>
+<span class="keyword">def</span> <span class="function">contarSillasEconomicasLibres</span>(self):
+    contador = 0
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8, len(self.__sillas)):
+        <span class="keyword">if</span> <span class="keyword">not</span> self.__sillas[i].sillaAsignada():
+            contador += 1
+    <span class="keyword">return</span> contador
+
+<span class="keyword">def</span> <span class="function">contarPasilloEjecutivas</span>(self):
+    contador = 0
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> <span class="keyword">not</span> silla.sillaAsignada() <span class="keyword">and</span> silla.darUbicacion() == Silla.Ubicacion.PASILLO:
+            contador += 1
+    <span class="keyword">return</span> contador
+
+<span class="keyword">def</span> <span class="function">desocuparAvion</span>(self):
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(self.__sillas)):
+        self.__sillas[i].desasignarSilla()
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>Métodos adicionales para ejecutar ejemplos</h2>
+            <pre>
+<span class="comment"># Métodos adicionales permiten comprobar el funcionamiento con los ejemplos que están al final </span>
+
+<span class="keyword">def</span> <span class="function">registrarPasajeroEjecutivo</span>(self, pCedula, pNombre):
+    nuevo_pasajero = Pasajero(pCedula, pNombre)    
+    <span class="comment"># Buscar una silla ejecutiva libre (cualquier ubicación)</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(8):
+        silla = self.__sillas[i]
+        <span class="keyword">if</span> <span class="keyword">not</span> silla.sillaAsignada():
+            silla.asignarPasajero(nuevo_pasajero)
+            <span class="keyword">return</span> True
+    
+    <span class="keyword">return</span> False  <span class="comment"># Si no hay sillas ejecutivas disponibles</span>
+
+<span class="keyword">def</span> <span class="function">buscarPasajero</span>(self, pCedula):
+    <span class="keyword">for</span> silla <span class="keyword">in</span> self.__sillas:
+        <span class="keyword">if</span> silla.sillaAsignada() <span class="keyword">and</span> silla.darPasajero().darCedula() == pCedula:
+            <span class="keyword">return</span> silla.darPasajero()
+    <span class="keyword">return</span> None
+
+<span class="keyword">def</span> <span class="function">crearListaPasajeros</span>(self):
+    lista_pasajeros = []
+    
+    <span class="keyword">for</span> silla <span class="keyword">in</span> self.__sillas:
+        <span class="keyword">if</span> silla.sillaAsignada():
+            pasajero = silla.darPasajero()
+            <span class="comment"># diccionario para pasajero</span>
+            info = {
+                <span class="string">"cedula"</span>: pasajero.darCedula(),
+                <span class="string">"nombre"</span>: pasajero.darNombre(),
+                <span class="string">"clase"</span>: <span class="string">"Ejecutiva"</span> <span class="keyword">if</span> silla.darClase() == Silla.Clase.EJECUTIVA <span class="keyword">else</span> <span class="string">"Económica"</span>,
+                <span class="string">"ubicacion"</span>: str(silla.darUbicacion()).split(<span class="string">'.'</span>)[1],
+                <span class="string">"numero_silla"</span>: silla.darNumero()
+            }
+            lista_pasajeros.append(info)
+    
+    <span class="keyword">return</span> lista_pasajeros
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>Mapa de Asientos del Avión</h2>
+            
+            <div class="airplane-map">
+                <div class="airplane">
+                    <div class="seats-container">
+                        <div class="left-seats">
+                            <!-- Sillas ejecutivas izquierda -->
+                            <div class="row">
+                                <div class="seat ejecutiva occupied">1</div>
+                                <div class="seat ejecutiva occupied">2</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat ejecutiva empty">5</div>
+                                <div class="seat ejecutiva empty">6</div>
+                            </div>
+                            
+                            <!-- Sillas económicas izquierda -->
+                            <div class="row">
+                                <div class="seat economica occupied">9</div>
+                                <div class="seat economica empty">10</div>
+                                <div class="seat economica empty">11</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">15</div>
+                                <div class="seat economica empty">16</div>
+                                <div class="seat economica empty">17</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">21</div>
+                                <div class="seat economica empty">22</div>
+                                <div class="seat economica empty">23</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">27</div>
+                                <div class="seat economica empty">28</div>
+                                <div class="seat economica empty">29</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">33</div>
+                                <div class="seat economica empty">34</div>
+                                <div class="seat economica empty">35</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">39</div>
+                                <div class="seat economica empty">40</div>
+                                <div class="seat economica empty">41</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">45</div>
+                                <div class="seat economica empty">46</div>
+                                <div class="seat economica empty">47</div>
+                            </div>
+                        </div>
+                        
+                        <div class="right-seats">
+                            <!-- Sillas ejecutivas derecha -->
+                            <div class="row">
+                                <div class="seat ejecutiva empty">3</div>
+                                <div class="seat ejecutiva empty">4</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat ejecutiva empty">7</div>
+                                <div class="seat ejecutiva empty">8</div>
+                            </div>
+                            
+                            <!-- Sillas económicas derecha -->
+                            <div class="row">
+                                <div class="seat economica empty">12</div>
+                                <div class="seat economica empty">13</div>
+                                <div class="seat economica empty">14</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">18</div>
+                                <div class="seat economica empty">19</div>
+                                <div class="seat economica empty">20</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">24</div>
+                                <div class="seat economica empty">25</div>
+                                <div class="seat economica empty">26</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">30</div>
+                                <div class="seat economica empty">31</div>
+                                <div class="seat economica empty">32</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">36</div>
+                                <div class="seat economica empty">37</div>
+                                <div class="seat economica empty">38</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">42</div>
+                                <div class="seat economica empty">43</div>
+                                <div class="seat economica empty">44</div>
+                            </div>
+                            <div class="row">
+                                <div class="seat economica empty">48</div>
+                                <div class="seat economica empty">49</div>
+                                <div class="seat economica empty">50</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #222;"></div>
+                        <span>Ejecutiva desocupada</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--light-gray);"></div>
+                        <span>Económica desocupada</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--occupied-green);"></div>
+                        <span>Ocupada</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Ejemplo de uso</h2>
+            <pre>
+<span class="comment"># En el grafico superior que representa los puestos del avión, se marcan las sillas ocupadas en este ejemplo </span>
+<span class="keyword">def</span> <span class="function">main</span>():
+    <span class="comment"># Crear el avión</span>
+    avion = Avion()
+    
+    <span class="comment"># Registrar pasajeros</span>
+    avion.registrarPasajeroEjecutivo(<span class="string">"123456"</span>, <span class="string">"Nicolas Maduro Moros"</span>)
+    avion.registrarPasajeroEjecutivo(<span class="string">"654321"</span>, <span class="string">"Miguel Polo Polo"</span>)
+    
+    <span class="comment"># Crear un pasajero y asignarlo a silla económica</span>
+    pasajero = Pasajero(<span class="string">"150508"</span>, <span class="string">"Wolfgang Amadeus Mozart"</span>)
+    avion.asignarSillaEconomica(Silla.Ubicacion.VENTANA, pasajero)
+    
+    <span class="comment"># Obtener lista de pasajeros</span>
+    lista = avion.crearListaPasajeros()
+    print(<span class="string">"Lista de pasajeros:"</span>)
+    <span class="keyword">for</span> p <span class="keyword">in</span> lista:
+        print(<span class="string">f"- {p['nombre']} (CC: {p['cedula']}), Clase: {p['clase']}, Silla: {p['numero_silla']}"</span>)
+    
+    <span class="comment"># Probar métodos</span>
+    print(<span class="string">f"\nSillas económicas libres: {avion.contarSillasEconomicasLibres()}"</span>)
+    print(<span class="string">f"Puestos disponibles en pasillos ejecutivos: {avion.contarPasilloEjecutivas()}"</span>)
+    print(<span class="string">f"Sillas ejecutivas ocupadas: {avion.contarSillasEjecutivasOcupadas()}"</span>)
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    main()
+            </pre>
+
+            <div class="terminal">
+    		<div class="terminal-prompt">Ejecución en terminal:</div>
+    		<div class="terminal-output">Lista de pasajeros:<br>
+	- Nicolas Maduro Moros (CC: 123456), Clase: Ejecutiva, Silla: 1<br>
+	- Miguel Polo Polo (CC: 654321), Clase: Ejecutiva, Silla: 2<br>
+	- Wolfgang Amadeus Mozart (CC: 150508), Clase: Económica, Silla: 9<br>
+	<br>
+	Sillas económicas libres: 41<br>
+	Puestos disponibles en pasillos ejecutivos: 2<br>
+	Sillas ejecutivas ocupadas: 2</div>
+	</div>
+        </div>
+    </div>
